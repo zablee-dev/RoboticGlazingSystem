@@ -38,13 +38,13 @@
 
 ## 📸 Giao diện & Kiến trúc hoạt động thực tế
 
-![Hệ thống nhận diện YOLO](image/YOLO.png)
+![Hệ thống nhận diện YOLO](image/yolo_detection.png)
 > **AI Computer Vision**: Chạy mô hình YOLO dưới dạng chuẩn ONNX để theo dõi và bắt bounding box hình ảnh kính. Phần mềm nhận hình liên tục, phân loại ra các ID chuẩn (`gnGlassType`) và truyền Parameter Realtime qua Robot.
 
-![Giao Diện Trung Tâm](image/output.png)
+![Giao Diện Trung Tâm](image/main_dashboard.png)
 > **Phần mềm điều khiển chính (PC-based HMI)**: Nhóm tính năng được chia khu vực cực kỳ mạch lạc. Khối quét Robot tự động kết nối TCP/IP qua cổng xxxx, Khối điều khiển Sync Rate hệ thống, và Khối LOG (nhật ký) ghi trạng thái realtime từng miligiây rất chuyên nghiệp thao tác người dùng.
 
-![Giám Sát I/O Trực Tiết](image/output2.png)
+![Giám Sát I/O Trực Tiết](image/io_monitoring.png)
 > **Giám sát tín hiệu I/O trạm trung tâm**: Các đèn báo I/O xanh/đỏ (Q0.6, I0.6, M6.6...) để anh em kỹ thuật kiểm tra và bật/tắt (Force Set/Reset) trực tiếp tín hiệu phần cứng trét keo giữa PC và PLC Siemens thông qua Profinet, dễ dàng bảo trì hoặc dò đấu nối dây mảng tủ điện.
 
 ## 🔄 Tổng quan luồng Chu Trình Tự Động (Auto Cycle)
