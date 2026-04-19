@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboticGlazingSystem.WinForms", "RoboticGlazingSystem.WinForms.csproj", "{D446A0CE-AC4D-BC9D-1303-8403DABBA26B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D446A0CE-AC4D-BC9D-1303-8403DABBA26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D446A0CE-AC4D-BC9D-1303-8403DABBA26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D446A0CE-AC4D-BC9D-1303-8403DABBA26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D446A0CE-AC4D-BC9D-1303-8403DABBA26B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62E1D1AA-DEE2-41A6-AD15-EFE025017F5E}
+	EndGlobalSection
+EndGlobal

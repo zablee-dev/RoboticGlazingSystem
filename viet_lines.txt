@@ -1,0 +1,134 @@
+16: /// Main Form - UI giống LastDance
+37: private const int YOLO_FRAME_SKIP = 15; // Chỉ chạy YOLO mỗi 15 frame (~2 lần/giây) - giảm tải CPU
+38: private volatile bool _isProcessingYolo = false; // Tránh queue buildup
+41: private bool _scanCompleted = false; // TRUE khi đã scan xong, giữ giá trị
+42: private int _savedGlassType = -1; // Giá trị gnGlassType đã lưu
+43: private bool _lastGbHome = false; // Theo dõi trạng thái gbHome
+44: private bool _lastI0_0 = false; // Theo dõi nút Start (I0.0)
+45: private Bitmap? _capturedScanImage = null; // Ảnh đã chụp khi scan
+50: private bool _glueSent = false; // Đã gửi lệnh GLUE chưa
+51: private bool _doneGlueSent = false; // Sent signal DoneGlue (M1.2) cho Robot A chưa
+52: private bool _valveActivated = false; // Van 5/2 đã được bật khi robot đến điểm phun đầu tiên
+90: // Kiểm tra form và control còn tồn tại không
+105: // Form đã đóng, bỏ qua
+118: // Control đã bị dispose, bỏ qua
+376: // Fast sync - tăng tốc độ refresh (không nên dùng thường xuyên)
+385: timerUI.Interval = 500; // Normal refresh - cân bằng tốc độ/hiệu năng
+560: Log($"       ...đang chờ ({waitCount/2}s)");
+742: ofd.Title = "Chọn file model YOLO (.onnx)";
+765: ofd.Title = "Chọn ảnh để detect";
+798: // Vẽ bounding box
+804: // Text hiển thị: ClassName + Confidence %
+807: // Tính kích thước text
+811: // Vẽ nền đen cho text (dễ đọc hơn)
+821: // Vẽ text trắng/xanh lên nền đen
+826: // Log chi tiết
+831: // ====== GHI gnGlassType LÊN ROBOT (cho test thủ công) ======
+880: // Dùng camera index đã chọn (từ dropdown cboCamera)
+882: Log($"Đang mở camera {targetIndex}...");
+893: Log($"Camera {targetIndex} đã bật!");
+903: Log($"Không thể mở camera {targetIndex}! Hãy chọn camera khác.");
+989: // Chỉ cập nhật _frame khi cần (cho auto-scan)
+996: // Hiển thị frame (không clone - dùng trực tiếp)
+999: // Chỉ chạy YOLO mỗi N frame VÀ không đang xử lý
+1057: await Task.Delay(50); // ~20 FPS - tiết kiệm CPU, vẫn đủ mượt
+1081: // Refresh I/O mỗi 4 ticks (giảm tải đáng kể)
+1087: // Refresh Variables mỗi 6 ticks (giảm tải network calls)
+1096: // Check scan mỗi 3 ticks
+1102: // Check nút Start I0.0 mỗi 3 ticks
+1108: // Đọc lượng keo từ Loadcell (MD20) mỗi 5 ticks
+1134: // ====== RESET KHI ROBOT B VỀ HOME ======
+1135: // Detect rising edge của gbHome (FALSE -> TRUE)
+1136: // CHỈ reset khi:
+1137: // 1. Đã hoàn thành gửi M1.2 (_doneGlueSent = true), HOẶC
+1138: // 2. Chưa bắt đầu GLUE (!_glueSent)
+1143: Log("=== ROBOT B ĐANG Ở HOME - RESET TRẠNG THÁI ===");
+1147: // Xóa ảnh đã chụp khi hết chu trình
+1166: // Robot B về Home nhưng chưa gửi M1.2 - KHÔNG reset, chờ gbGlueDone
+1167: Log("Robot B về Home, chờ gbGlueDone để gửi M1.2...");
+1171: // ====== BẬT CAMERA KHI ĐẾN VỊ TRÍ SCAN ======
+1174: // Robot đã đến vị trí scan - bật camera nếu not running
+1177: Log("Robot đến vị trí scan - Đang bật camera...");
+1183: // Chờ camera khởi động
+1188: // ====== Xử LÝ SCAN ======
+1189: // Detect daScan = TRUE và camera đang chạy
+1194: // Run YOLO detection với RETRY (tối đa 10 lần, mỗi lần cách 500ms)
+1202: // Chờ frame mới
+1205: // Chụp frame mới
+1233: break; // Thoát vòng lặp khi detect được
+1243: Log($"*** FAILED: Không detect được sau {maxRetry} lần thử! ***");
+1263: // ====== GỬI LỆNH CHO ROBOT A QUA PLC ======
+1268: // Gọi trên UI thread để giống khi nhấn nút bằng tay
+1270: // Reset cả 2 trước
+1276: // Set tín hiệu - GIỮ NGUYÊN cho đến khi chu kỳ hoàn thành
+1277: // M1.1/M1.0 sẽ được reset khi Robot A done (I0.7 = TRUE)
+1291: // KHÔNG reset ngay, M1.0/M1.1 sẽ được reset khi chu kỳ hoàn thành
+1298: // ====== CHỤP ẢNH VỚI BOUNDING BOX VÀ TẮT CAMERA ======
+1302: // Tạo ảnh với bounding box để lưu và hiển thị
+1331: // Lưu ảnh đã chụp
+1335: // Log độ chính xác
+1341: // Tắt camera sau khi scan xong
+1344: // Hiển thị ảnh đã chụp lên màn hình
+1363: // ====== GỬI LỆNH CHO ROBOT A QUA PLC ======
+1369: // Set tín hiệu - GIỮ NGUYÊN cho đến khi chu kỳ hoàn thành
+1382: // ====== CHỤP ẢNH VỚI BOUNDING BOX VÀ TẮT CAMERA (retry) ======
+1386: // Tạo ảnh với bounding box
+1448: /// Nếu gbHome=FALSE + I0.0 -> HOME
+1449: /// Nếu gbBusy=TRUE -> không làm gì
+1455: // Đọc trạng thái I0.0
+1458: // Đọc trạng thái từ Robot B
+1468: // ========== KIỂM TRA BUSY ==========
+1469: // Nếu robot đang bận thì không thực hiện gì cả
+1481: // Nhấn I0.0 khi robot KHÔNG ở Home → gửi HOME
+1484: Log("=== NÚT START (I0.0) ĐƯỢC NHẤN ===");
+1485: Log("Robot chưa ở Home, gửi lệnh HOME...");
+1492: // Nhấn I0.0 khi robot ĐÃ ở Home → bắt đầu SCAN
+1495: Log("=== NÚT START (I0.0) ĐƯỢC NHẤN ===");
+1496: Log("Robot đang ở Home, bắt đầu SCAN...");
+1498: // Bật camera
+1505: // Gửi lệnh SCAN (dùng task/module đã chọn từ UI)
+1518: // Chờ scan xong (YOLO detection đã chạy trong CheckAndProcessScan)
+1527: // Chờ I0.6 (Robot A Glue Position) trước khi gửi GLUE
+1534: // Gửi lệnh GLUE dựa vào gnGlassType
+1542: // Van sẽ được bật khi gbAtGluePos = TRUE (robot đến điểm phun đầu tiên)
+1552: // Van sẽ được bật khi gbAtGluePos = TRUE (robot đến điểm phun đầu tiên)
+1558: // Chờ I0.6
+1559: // Log("Chờ I0.6 = TRUE (Robot A Glue Position)...");
+1561: // Đọc trạng thái gbGlueDone từ Robot B
+1565: // DEBUG: Log trạng thái để tìm lỗi M1.2
+1571: // Đọc trạng thái gbValveOn từ Robot B - Robot điều khiển ON/OFF van qua biến này
+1575: // PC điều khiển van theo trạng thái gbValveOn từ Robot B
+1576: // Dùng this.Invoke() như cách gửi M1.0/M1.1 thành công
+1581: // Robot báo BẬT van - gọi trên UI thread
+1583: _plc.SetGlueValve(true);   // M6.6 = TRUE → Q0.7 → BẬT Van 5/2
+1590: // Robot báo TẮT van - gọi trên UI thread
+1592: _plc.SetGlueValve(false);  // M6.6 = FALSE → Q0.7 → TẮT Van 5/2
+1599: // Khi Robot B phun keo xong → tắt van và báo Robot A
+1600: // DB1.DBX0.7 = Done Glue (tắt van)
+1603: Log($"★★★ PHUN KEO XONG - GỬI M1.2 CHO ROBOT A ★★★");
+1605: // Gọi trên UI thread như cách gửi M1.0/M1.1 thành công
+1607: // TẮT van 5/2
+1608: _plc.SetGlueValve(false);  // M6.6 = FALSE → Q0.7 → TẮT Van 5/2
+1613: // Gửi M1.2 báo Robot A đi lắp kính
+1616: Log("✅ M1.2 = TRUE → Robot A đi lắp kính");
+1622: // Đọc I0.7: Robot A đã hoàn thành lắp kính
+1625: // ⚠️ CHỈ reset khi Robot A hoàn thành (I0.7 = TRUE)
+1626: // KHÔNG reset khi Robot B về Home vì Robot A cần thời gian nhận DI3 và lắp kính
+1629: // Reset TẤT CẢ tín hiệu PLC khi Robot A đã xong
+1639: // Reset gbGlueDone trên Robot B cho chu kỳ tiếp theo
+1643: Log("=== CHU KỲ HOÀN THÀNH ===");
+1645: // ★★★ GỬI SCAN CHO ROBOT B ĐỂ BẮT ĐẦU CHU KỲ MỚI ★★★
+1646: Log("I0.7 = TRUE → Robot A hoàn thành → Gửi SCAN cho Robot B...");
+1649: Log("✅ SCAN command sent! Robot B đi scan tiếp.");
+1659: Log("⚠️ Không gửi được SCAN, về IDLE");
+1672: // Không sử dụng, reset về IDLE
+1734: // Cập nhật hiển thị
+1739: // Đổi màu dựa vào lượng keo
+1743: pnlGlueWeight.BackColor = Color.FromArgb(80, 20, 20); // Đỏ đậm
+1748: pnlGlueWeight.BackColor = Color.FromArgb(60, 40, 20); // Cam đậm
+1753: pnlGlueWeight.BackColor = Color.FromArgb(40, 40, 40); // Mặc định
+1757: // Cảnh báo khi lượng keo thấp (chỉ cảnh báo 1 lần cho đến khi nạp thêm)
+1761: Log($"⚠️ CẢNH BÁO: Lượng keo còn {glueWeight:F2} kg! Vui lòng nạp thêm keo.");
+1766: $"Lượng keo còn {glueWeight * 1000:F0}g!\n\nVui lòng nạp thêm keo.",
+1767: "⚠️ CẢNH BÁO: KEO SẮP HẾT",
+1774: // Reset cảnh báo khi nạp thêm keo
