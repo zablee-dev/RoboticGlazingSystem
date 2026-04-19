@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -18,16 +18,16 @@
 
   <ItemGroup>
     <Reference Include="ABB.Robotics.Controllers.PC">
-      <HintPath>C:\Program Files (x86)\ABB\RobotStudio 2025\Bin\ABB.Robotics.Controllers.PC.dll</HintPath>
+      <HintPath>Libraries\ABB\ABB.Robotics.Controllers.PC.dll</HintPath>
     </Reference>
     <Reference Include="ABB.Robotics.RobotStudio.Controllers">
-      <HintPath>C:\Program Files (x86)\ABB\RobotStudio 2025\Bin\ABB.Robotics.RobotStudio.Controllers.dll</HintPath>
+      <HintPath>Libraries\ABB\ABB.Robotics.RobotStudio.Controllers.dll</HintPath>
     </Reference>
     <Reference Include="RobotStudio.Services.RobApi">
-      <HintPath>C:\Program Files (x86)\ABB\RobotStudio 2025\Bin\RobotStudio.Services.RobApi.dll</HintPath>
+      <HintPath>Libraries\ABB\RobotStudio.Services.RobApi.dll</HintPath>
     </Reference>
     <Reference Include="RobotStudio.Services.RobApi.Desktop">
-      <HintPath>C:\Program Files (x86)\ABB\RobotStudio 2025\Bin\RobotStudio.Services.RobApi.Desktop.dll</HintPath>
+      <HintPath>Libraries\ABB\RobotStudio.Services.RobApi.Desktop.dll</HintPath>
     </Reference>
   </ItemGroup>
 
